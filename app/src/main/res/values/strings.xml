@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="error_no_internet_connection">No Internet connection is available!</string>
+    <string name="error_loading_movies_from_internet">Error while loading movies!</string>
+    <string name="error_missing_movie_info">Missing movie info!</string>
+    <string name="action_popular">Popular</string>
+    <string name="action_top_rated">Top Rated</string>
+
+    <string name="detail_release_date">Release Date:</string>
+    <string name="detail_rating">Rating:</string>
+    <string name="detail_popularity">Popularity:</string>
+</resources>
