@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.udacity.and.popularmovies.BuildConfig;
 import com.udacity.and.popularmovies.R;
 import com.udacity.and.popularmovies.adapters.MoviesGridAdapter;
 import com.udacity.and.popularmovies.models.Movie;
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity
         private static final String API_POPULAR_PATH_SEGMENT = "popular";
         private static final String API_TOP_RATED_PATH_SEGMENT = "top_rated";
         private static final String API_KEY_QUERY_PARAM_NAME = "api_key";
-        public static final String API_KEY_QUERY_PARAM_VALUE = ""; // TODO: remove before checkin
+        public static final String API_KEY_QUERY_PARAM_VALUE = BuildConfig.API_KEY;
 
         private AsyncTaskResult<List<Movie>> moviesResult;
         private int requestType = REQUEST_TYPE_POPULAR;

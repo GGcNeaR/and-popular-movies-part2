@@ -55,7 +55,9 @@ public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.Mo
         holder.moviePosterImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onMoviePosterClicked(movie);
+                if (listener != null) {
+                    listener.onMoviePosterClicked(movie);
+                }
             }
         });
     }

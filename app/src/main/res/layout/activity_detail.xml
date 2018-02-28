@@ -9,132 +9,139 @@
         <variable name="movie" type="com.udacity.and.popularmovies.models.Movie"/>
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.udacity.and.popularmovies.ui.DetailActivity">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/movie_backdrop_iv"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true"
-            app:movieImagePath="@{movie.backdropPath}"
-            app:movieImageType='@{"w500"}'
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_height="match_parent"
+            tools:context="com.udacity.and.popularmovies.ui.DetailActivity">
 
-        <TextView
-            android:id="@+id/movie_title_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/movie_backdrop_iv"
-            app:layout_constraintLeft_toRightOf="@id/movie_poster_iv"
-            app:layout_constraintRight_toRightOf="parent"
-            android:textSize="22sp"
-            android:text="@{movie.title}"
-            tools:text="The Maze Runner"/>
+            <ImageView
+                android:id="@+id/movie_backdrop_iv"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                app:movieImagePath="@{movie.backdropPath}"
+                app:movieImageType='@{"w500"}'
+                app:layout_constraintTop_toTopOf="parent"/>
 
-        <ImageView
-            android:id="@+id/movie_poster_iv"
-            android:layout_width="140dp"
-            android:layout_height="180dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:movieImagePath="@{movie.posterPath}"
-            app:movieImageType='@{"w185"}'
-            app:layout_constraintTop_toBottomOf="@id/movie_backdrop_iv"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            <TextView
+                android:id="@+id/movie_title_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/movie_backdrop_iv"
+                app:layout_constraintLeft_toRightOf="@id/movie_poster_iv"
+                app:layout_constraintRight_toRightOf="parent"
+                android:textSize="22sp"
+                android:text="@{movie.title}"
+                tools:text="The Maze Runner"/>
 
-        <TextView
-            android:id="@+id/movie_release_date_label_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/movie_title_tv"
-            app:layout_constraintLeft_toRightOf="@id/movie_poster_iv"
-            android:textStyle="bold"
-            android:text="@string/detail_release_date"/>
+            <ImageView
+                android:id="@+id/movie_poster_iv"
+                android:layout_width="140dp"
+                android:layout_height="180dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                app:movieImagePath="@{movie.posterPath}"
+                app:movieImageType='@{"w185"}'
+                app:layout_constraintTop_toBottomOf="@id/movie_backdrop_iv"
+                app:layout_constraintLeft_toLeftOf="parent"/>
 
-        <TextView
-            android:id="@+id/movie_release_date_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/movie_release_date_label_tv"
-            app:layout_constraintLeft_toRightOf="@id/movie_release_date_label_tv"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="4dp"
-            android:text="@{movie.releaseDate}"
-            tools:text="2014-09-10"/>
+            <TextView
+                android:id="@+id/movie_release_date_label_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/movie_title_tv"
+                app:layout_constraintLeft_toRightOf="@id/movie_poster_iv"
+                android:textStyle="bold"
+                android:text="@string/detail_release_date"/>
 
-        <TextView
-            android:id="@+id/movie_rating_label_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/movie_release_date_label_tv"
-            app:layout_constraintLeft_toRightOf="@id/movie_poster_iv"
-            android:textStyle="bold"
-            android:text="@string/detail_rating"/>
+            <TextView
+                android:id="@+id/movie_release_date_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/movie_release_date_label_tv"
+                app:layout_constraintLeft_toRightOf="@id/movie_release_date_label_tv"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginLeft="4dp"
+                android:text="@{movie.releaseDate}"
+                tools:text="2014-09-10"/>
 
-        <TextView
-            android:id="@+id/movie_rating_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/movie_rating_label_tv"
-            app:layout_constraintLeft_toRightOf="@id/movie_rating_label_tv"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
-            android:text='@{"" + movie.voteAverage + "/10 (" + movie.voteCount + ")"}'
-            tools:text="7.4/10 (4248)"/>
+            <TextView
+                android:id="@+id/movie_rating_label_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/movie_release_date_label_tv"
+                app:layout_constraintLeft_toRightOf="@id/movie_poster_iv"
+                android:textStyle="bold"
+                android:text="@string/detail_rating"/>
 
-        <TextView
-            android:id="@+id/movie_popularity_label_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/movie_rating_label_tv"
-            app:layout_constraintLeft_toRightOf="@id/movie_poster_iv"
-            android:textStyle="bold"
-            android:text="@string/detail_popularity"/>
+            <TextView
+                android:id="@+id/movie_rating_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/movie_rating_label_tv"
+                app:layout_constraintLeft_toRightOf="@id/movie_rating_label_tv"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:text='@{"" + movie.voteAverage + "/10 (" + movie.voteCount + ")"}'
+                tools:text="7.4/10 (4248)"/>
 
-        <TextView
-            android:id="@+id/movie_popularity_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/movie_popularity_label_tv"
-            app:layout_constraintLeft_toRightOf="@id/movie_popularity_label_tv"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
-            android:text='@{"" + movie.popularity}'
-            tools:text="456.70939"/>
+            <TextView
+                android:id="@+id/movie_popularity_label_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/movie_rating_label_tv"
+                app:layout_constraintLeft_toRightOf="@id/movie_poster_iv"
+                android:textStyle="bold"
+                android:text="@string/detail_popularity"/>
 
-        <TextView
-            android:id="@+id/movie_overview_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/movie_poster_iv"
-            android:paddingLeft="8dp"
-            android:paddingStart="8dp"
-            android:paddingRight="8dp"
-            android:paddingEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@{movie.overview}"
-            tools:text="Tarzan, having acclimated to life in London, is called back to his former home in the jungle to investigate the activities at a mining encampment."
-            />
+            <TextView
+                android:id="@+id/movie_popularity_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/movie_popularity_label_tv"
+                app:layout_constraintLeft_toRightOf="@id/movie_popularity_label_tv"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:text='@{"" + movie.popularity}'
+                tools:text="456.70939"/>
 
-    </android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/movie_overview_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/movie_poster_iv"
+                android:paddingLeft="8dp"
+                android:paddingStart="8dp"
+                android:paddingRight="8dp"
+                android:paddingEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                android:text="@{movie.overview}"
+                tools:text="Tarzan, having acclimated to life in London, is called back to his former home in the jungle to investigate the activities at a mining encampment."
+                />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
 
 </layout>
 
