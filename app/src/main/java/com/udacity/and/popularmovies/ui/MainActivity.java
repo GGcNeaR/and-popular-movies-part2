@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity
         
         // Note: only for reminder to reviewer
         if (API_KEY_QUERY_PARAM_VALUE.isEmpty()) {
-            Toast.makeText(this, "Please set API_KEY_QUERY_PARAM_VALUE in code to your API_KEY", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please set your API_KEY in gradle.properties", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
