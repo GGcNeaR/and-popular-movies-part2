@@ -3,6 +3,8 @@ package com.udacity.and.popularmovies.utils;
 import android.text.TextUtils;
 
 import com.udacity.and.popularmovies.models.Movie;
+import com.udacity.and.popularmovies.models.Review;
+import com.udacity.and.popularmovies.models.Video;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,6 +15,7 @@ import java.util.List;
 
 public class JsonUtils {
     private static final String RESULT_KEY = "results";
+
     private static final String ID_KEY = "id";
     private static final String TITLE_KEY = "title";
     private static final String OVERVIEW_KEY = "overview";
@@ -26,6 +29,14 @@ public class JsonUtils {
     private static final String POPULARITY_KEY = "popularity";
     private static final String BACKDROP_PATH_KEY = "backdrop_path";
     private static final String ADULT_KEY = "adult";
+
+    private static final String KEY_KEY = "key";
+    private static final String NAME_KEY = "name";
+    private static final String TYPE_KEY = "type";
+
+    private static final String AUTHOR_KEY = "author";
+    private static final String CONTENT_KEY = "content";
+    private static final String URL_KEY = "url";
 
     public static List<Movie> parseMovies(String jsonString) {
         List<Movie> movies = new ArrayList<>();
@@ -49,11 +60,63 @@ public class JsonUtils {
                     }
                 }
             } catch (JSONException e) {
-                // throw exception to let the caller know the parsing has failed
+                // empty list will be returned
             }
         }
 
         return movies;
+    }
+
+    public static List<Video> parseVideos(String jsonString) {
+        List<Video> videos = new ArrayList<>();
+
+        if (!TextUtils.isEmpty(jsonString)) {
+            try {
+                JSONObject pageResultJson = new JSONObject(jsonString);
+                if (pageResultJson.has(RESULT_KEY)) {
+                    JSONArray resultsJsonArray = pageResultJson.getJSONArray(RESULT_KEY);
+                    for (int i = 0, len = resultsJsonArray.length(); i < len; i++) {
+                        JSONObject videoJsonObject = resultsJsonArray.optJSONObject(i);
+                        if (videoJsonObject != null) {
+                            Video video = parseVideo(videoJsonObject);
+                            if (video != null) {
+                                videos.add(video);
+                            }
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                // empty list will be returned
+            }
+        }
+
+        return videos;
+    }
+
+    public static List<Review> parseReviews(String jsonString) {
+        List<Review> reviews = new ArrayList<>();
+
+        if (!TextUtils.isEmpty(jsonString)) {
+            try {
+                JSONObject pageResultJson = new JSONObject(jsonString);
+                if (pageResultJson.has(RESULT_KEY)) {
+                    JSONArray resultsJsonArray = pageResultJson.getJSONArray(RESULT_KEY);
+                    for (int i = 0, len = resultsJsonArray.length(); i < len; i++) {
+                        JSONObject videoJsonObject = resultsJsonArray.optJSONObject(i);
+                        if (videoJsonObject != null) {
+                            Review review = parseReview(videoJsonObject);
+                            if (review != null) {
+                                reviews.add(review);
+                            }
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                // empty list will be returned
+            }
+        }
+
+        return reviews;
     }
 
     private static Movie parseMovie(JSONObject movieJsonObject) throws JSONException {
@@ -131,5 +194,55 @@ public class JsonUtils {
         }
 
         return movie;
+    }
+
+    private static Video parseVideo(JSONObject videoJsonObject) throws JSONException {
+        Video video = null;
+        String id;
+        String key;
+        String name;
+        String type = null;
+
+        if (videoJsonObject.has(ID_KEY) &&
+            videoJsonObject.has(KEY_KEY) &&
+            videoJsonObject.has(NAME_KEY)) {
+
+            id = videoJsonObject.optString(ID_KEY);
+            key = videoJsonObject.optString(KEY_KEY);
+            name = videoJsonObject.optString(NAME_KEY);
+
+            if (videoJsonObject.has(TYPE_KEY)) {
+                type = videoJsonObject.optString(TYPE_KEY);
+            }
+
+            video = new Video(id, key, name, type);
+        }
+
+        return video;
+    }
+
+    private static Review parseReview(JSONObject reviewJosnObject) throws JSONException {
+        Review review = null;
+        String id;
+        String author;
+        String content;
+        String url = null;
+
+        if (reviewJosnObject.has(ID_KEY) &&
+            reviewJosnObject.has(AUTHOR_KEY) &&
+            reviewJosnObject.has(CONTENT_KEY)) {
+
+            id = reviewJosnObject.optString(ID_KEY);
+            author = reviewJosnObject.optString(AUTHOR_KEY);
+            content = reviewJosnObject.optString(CONTENT_KEY);
+
+            if (reviewJosnObject.has(URL_KEY)) {
+                url = reviewJosnObject.optString(URL_KEY);
+            }
+
+            review = new Review(id, author, content, url);
+        }
+
+        return review;
     }
 }

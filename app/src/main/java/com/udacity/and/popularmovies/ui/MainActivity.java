@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     static class MoviesLoader extends AsyncTaskLoader<AsyncTaskResult<List<Movie>>> {
-        static final String REQUEST_TYPE_EXTRA = "REQUEST_TYPE_EXTRA";
+        static final String REQUEST_TYPE_EXTRA = "MOVIE_ID_EXTRA";
         static final int REQUEST_TYPE_POPULAR = 1;
         static final int REQUEST_TYPE_TOP_RATED = 2;
 

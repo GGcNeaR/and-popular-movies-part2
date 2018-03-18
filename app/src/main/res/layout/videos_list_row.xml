@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="video" type="com.udacity.and.popularmovies.models.Video" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:drawableLeft="@drawable/ic_movie"
+            android:drawablePadding="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@{video.name}"
+            android:textSize="15sp"
+            android:gravity="center_vertical"
+            tools:text="Mere Khwabon Mein - song by CinePlusPlus"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

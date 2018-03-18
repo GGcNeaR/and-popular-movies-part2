@@ -9,4 +9,9 @@
     <string name="detail_release_date">Release Date:</string>
     <string name="detail_rating">Rating:</string>
     <string name="detail_popularity">Popularity:</string>
+
+    <string name="error_loading_videos_from_internet">Error while loading videos!</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
