@@ -55,7 +55,6 @@ public class MovieReviewFragment extends Fragment
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             movie = getArguments().getParcelable(Movie.MOVIE_EXTRA);
-            initLoader(movie.getId());
         }
     }
 
@@ -68,6 +67,10 @@ public class MovieReviewFragment extends Fragment
         movieReviewsRecyclerView = view.findViewById(R.id.movie_reviews_rv);
         movieReviewsRecyclerView.setHasFixedSize(true);
         movieReviewsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        if (movie != null) {
+            initLoader(movie.getId());
+        }
 
         return view;
     }

@@ -38,6 +38,7 @@ public class DetailActivity extends AppCompatActivity {
         if (intent != null && intent.hasExtra(Movie.MOVIE_EXTRA)) {
             Movie movie = intent.getParcelableExtra(Movie.MOVIE_EXTRA);
             setupViewPager(viewPager, movie);
+            setTitle(movie.getTitle());
         } else {
             Toast.makeText(this, R.string.error_missing_movie_info, Toast.LENGTH_SHORT).show();
             finish();
