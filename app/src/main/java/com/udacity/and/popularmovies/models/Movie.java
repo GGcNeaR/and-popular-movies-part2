@@ -1,5 +1,6 @@
 package com.udacity.and.popularmovies.models;
 
+import android.databinding.ObservableBoolean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -23,10 +24,13 @@ public class Movie implements Parcelable {
     private String backdropPath;
     private boolean isAdult;
 
+    private final ObservableBoolean isFavourite = new ObservableBoolean();
+
     public Movie(int id, String title, String overview, String posterPath, String releaseDate,
                  String originalLanguage, String originalTitle, int[] genreIds,
                  int voteCount, double voteAverage, double popularity,
-                 String backdropPath, boolean isAdult) {
+                 String backdropPath, boolean isAdult, boolean isFavourite) {
+
         this.id = id;
         this.title = title;
         this.overview = overview;
@@ -40,6 +44,16 @@ public class Movie implements Parcelable {
         this.popularity = popularity;
         this.backdropPath = backdropPath;
         this.isAdult = isAdult;
+        this.isFavourite.set(isFavourite);
+    }
+    public Movie(int id, String title, String overview, String posterPath, String releaseDate,
+                 String originalLanguage, String originalTitle, int[] genreIds,
+                 int voteCount, double voteAverage, double popularity,
+                 String backdropPath, boolean isAdult) {
+        this(id, title, overview, posterPath, releaseDate,
+                originalLanguage, originalTitle, genreIds,
+                voteCount, voteAverage, popularity,
+                backdropPath, isAdult, false);
     }
 
     public int getId() {
@@ -92,6 +106,12 @@ public class Movie implements Parcelable {
 
     public boolean isAdult() {
         return isAdult;
+    }
+
+    public boolean isFavourite() { return isFavourite.get(); }
+
+    public void setFavourite(boolean isFavourite) {
+        this.isFavourite.set(isFavourite);
     }
 
     @Override

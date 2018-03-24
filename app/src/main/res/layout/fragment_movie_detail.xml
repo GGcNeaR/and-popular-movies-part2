@@ -5,6 +5,7 @@
 
     <data>
         <variable name="movie" type="com.udacity.and.popularmovies.models.Movie"/>
+        <variable name="presenter" type="com.udacity.and.popularmovies.ui.MovieDetailListener"/>
     </data>
 
     <ScrollView
@@ -120,6 +121,18 @@
                 android:layout_marginStart="4dp"
                 android:text='@{"" + movie.popularity}'
                 tools:text="456.70939"/>
+
+            <ImageButton
+                android:id="@+id/movie_favourite_btn"
+                android:background="@android:color/transparent"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_favourite"
+                android:layout_marginTop="8dp"
+                android:onClick="@{(view) -> presenter.onFavouriteClicked(view, movie)}"
+                app:layout_constraintTop_toBottomOf="@id/movie_popularity_label_tv"
+                app:layout_constraintLeft_toLeftOf="@id/movie_popularity_label_tv"
+                tools:src="@drawable/ic_favourite"/>
 
             <TextView
                 android:id="@+id/movie_overview_tv"

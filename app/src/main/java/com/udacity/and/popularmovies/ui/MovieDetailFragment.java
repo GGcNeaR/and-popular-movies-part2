@@ -4,6 +4,7 @@ package com.udacity.and.popularmovies.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -14,8 +15,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.udacity.and.popularmovies.BR;
 import com.udacity.and.popularmovies.BuildConfig;
 import com.udacity.and.popularmovies.R;
 import com.udacity.and.popularmovies.adapters.MoviesGridAdapter;
@@ -34,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MovieDetailFragment extends Fragment {
+public class MovieDetailFragment extends Fragment implements MovieDetailListener {
 
     private Movie movie;
 
@@ -65,7 +68,17 @@ public class MovieDetailFragment extends Fragment {
                 R.layout.fragment_movie_detail, container, false);
         View view = binding.getRoot();
         binding.setMovie(movie);
+        binding.setPresenter(this);
 
         return view;
+    }
+
+    @Override
+    public void onFavouriteClicked(View view, Movie movie) {
+        movie.setFavourite(!movie.isFavourite());
+        Drawable drawable = movie.isFavourite() ?
+                getResources().getDrawable(R.drawable.ic_favourite_selected) :
+                getResources().getDrawable(R.drawable.ic_favourite);
+        ((ImageButton) view).setImageDrawable(drawable);
     }
 }
