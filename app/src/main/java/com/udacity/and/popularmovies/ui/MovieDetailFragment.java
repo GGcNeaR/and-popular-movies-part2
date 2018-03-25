@@ -80,5 +80,7 @@ public class MovieDetailFragment extends Fragment implements MovieDetailListener
                 getResources().getDrawable(R.drawable.ic_favourite_selected) :
                 getResources().getDrawable(R.drawable.ic_favourite);
         ((ImageButton) view).setImageDrawable(drawable);
+
+        // add/remove movie
     }
 }
