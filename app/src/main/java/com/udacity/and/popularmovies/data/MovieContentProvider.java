@@ -1,6 +1,7 @@
 package com.udacity.and.popularmovies.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -38,6 +39,17 @@ public class MovieContentProvider extends ContentProvider {
         SQLiteDatabase db = moviesDbHelper.getReadableDatabase();
 
         switch (uriMatcher.match(uri)) {
+            case MOVIES_BY_ID:
+                String id = uri.getPathSegments().get(1);
+                retCursor = db.query(
+                        MovieContract.MovieEntry.TABLE_NAME,
+                        projection,
+                        MovieContract.MovieEntry.COLUMN_NAME_SERVER_ID + "=?",
+                        new String[] { id },
+                        null,
+                        null,
+                        null);
+                break;
             case MOVIES:
                 retCursor = db.query(MovieContract.MovieEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
@@ -58,11 +70,7 @@ public class MovieContentProvider extends ContentProvider {
             case MOVIES:
                 long id = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, values);
                 if (id > 0) {
-                    retUri = Uri.parse(MovieContract.AUTHORITY)
-                            .buildUpon()
-                            .appendPath(MovieContract.PATH_MOVIES)
-                            .appendPath(Long.toString(id))
-                            .build();
+                    retUri = ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, id);
                 } else {
                     throw new SQLException("Failed to insert row into " + uri);
                 }
@@ -70,6 +78,8 @@ public class MovieContentProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+
+        getContext().getContentResolver().notifyChange(uri, null);
 
         return retUri;
     }
