@@ -120,11 +120,23 @@
                 android:text='@{"" + movie.popularity}'
                 tools:text="456.70939"/>
 
+            <ImageButton
+                android:id="@+id/movie_favourite_btn"
+                android:background="@android:color/transparent"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@{movie.isFavourite ? @drawable/ic_favourite_selected : @drawable/ic_favourite}"
+                android:layout_marginTop="8dp"
+                android:onClick="@{(view) -> presenter.onFavouriteClicked(view, movie)}"
+                app:layout_constraintTop_toBottomOf="@id/movie_popularity_label_tv"
+                app:layout_constraintLeft_toLeftOf="@id/movie_popularity_label_tv"
+                tools:src="@drawable/ic_favourite"/>
+
             <TextView
                 android:id="@+id/movie_overview_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/movie_popularity_label_tv"
+                app:layout_constraintTop_toBottomOf="@id/movie_favourite_btn"
                 app:layout_constraintLeft_toRightOf="@id/movie_poster_iv"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="8dp"

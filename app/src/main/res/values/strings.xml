@@ -5,6 +5,7 @@
     <string name="error_missing_movie_info">Missing movie info!</string>
     <string name="action_popular">Popular</string>
     <string name="action_top_rated">Top Rated</string>
+    <string name="action_favourite">Favourite</string>
 
     <string name="detail_release_date">Release Date:</string>
     <string name="detail_rating">Rating:</string>

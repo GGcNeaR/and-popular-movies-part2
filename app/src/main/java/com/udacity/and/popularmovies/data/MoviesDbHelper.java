@@ -27,16 +27,13 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                     MovieEntry.COLUMN_NAME_TITLE + " TEXT NOT NULL, " +
                     MovieEntry.COLUMN_NAME_OVERVIEW + " TEXT NOT NULL, " +
                     MovieEntry.COLUMN_NAME_POSTER_PATH + " TEXT NOT NULL, " +
-                    MovieEntry.COLUMN_NAME_POSTER_LOCAL_PATH + " TEXT NULL, " +
                     MovieEntry.COLUMN_NAME_RELEASE_DATE + " TEXT NOT NULL, " +
                     MovieEntry.COLUMN_NAME_ORIGINAL_LANGUAGE + " TEXT NULL, " +
                     MovieEntry.COLUMN_NAME_ORIGINAL_TITLE + " TEXT NULL, " +
-                    MovieEntry.COLUMN_NAME_GENRE_IDS + " TEXT NULL, " +
                     MovieEntry.COLUMN_NAME_VOTE_COUNT + " INTEGER NOT NULL DEFAULT 0, " +
                     MovieEntry.COLUMN_NAME_VOTE_AVERAGE + " REAL NOT NULL DEFAULT 0, " +
                     MovieEntry.COLUMN_NAME_POPULARITY + " REAL NOT NULL DEFAULT 0, " +
                     MovieEntry.COLUMN_NAME_BACKDROP_PATH + " TEXT NOT NULL, " +
-                    MovieEntry.COLUMN_NAME_BACKDROP_LOCAL_PATH + " TEXT NULL, " +
                     MovieEntry.COLUMN_NAME_IS_ADULT + " INTEGER NOT NULL DEFAULT 0, " +
                     MovieEntry.COLUMN_NAME_TIMESTAMP + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP " +
                 ");";

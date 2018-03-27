@@ -21,21 +21,14 @@ public class MovieDataUtils {
         contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_TITLE, movie.getTitle());
         contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_OVERVIEW, movie.getOverview());
         contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_POSTER_PATH, movie.getPosterPath());
-        if (posterLocalPath != null) {
-            contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_POSTER_LOCAL_PATH, posterLocalPath);
-        }
         contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_RELEASE_DATE, movie.getReleaseDate());
         contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_ORIGINAL_LANGUAGE, movie.getOriginalLanguage());
         contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_ORIGINAL_TITLE, movie.getOriginalTitle());
-        contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_GENRE_IDS, TextUtils.join(",", Arrays.asList(movie.getGenreIds())));
         contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_VOTE_COUNT, movie.getVoteCount());
         contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_VOTE_AVERAGE, movie.getVoteAverage());
         contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_POPULARITY, movie.getPopularity());
         contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_BACKDROP_PATH, movie.getBackdropPath());
-        if (backDropLocalPath != null) {
-            contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_BACKDROP_LOCAL_PATH, backDropLocalPath);
-        }
-        contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_IS_ADULT, movie.isAdult());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_NAME_IS_ADULT, movie.isAdult() ? 1 : 0);
 
         return contentValues;
     }

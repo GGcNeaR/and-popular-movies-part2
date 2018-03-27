@@ -106,6 +106,26 @@ public class MoviesRepository {
     }
 
     private Movie getMovieFromCursor(Cursor cursor) {
-        return null;
+        Movie movie;
+
+        int id = cursor.getInt(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME_SERVER_ID));
+        String title = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME_TITLE));
+        String overview = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME_OVERVIEW));
+        String posterPath = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME_POSTER_PATH));
+        String releaseDate = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME_RELEASE_DATE));
+        String originalLanguage = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME_ORIGINAL_LANGUAGE));
+        String originalTitle = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME_ORIGINAL_TITLE));
+        int voteCount = cursor.getInt(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME_VOTE_COUNT));
+        double voteAverage = cursor.getDouble(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME_VOTE_AVERAGE));
+        double popularity = cursor.getDouble(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME_POPULARITY));
+        String backdropPath = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME_BACKDROP_PATH));
+        boolean isAdult = cursor.getInt(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME_IS_ADULT)) == 1;
+
+        movie = new Movie(id, title, overview, posterPath, releaseDate,
+                originalLanguage, originalTitle,
+                voteCount, voteAverage, popularity, backdropPath,
+                isAdult, true);
+
+        return movie;
     }
 }

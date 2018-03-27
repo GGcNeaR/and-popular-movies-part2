@@ -19,8 +19,12 @@ import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
+    public static final int UNFAVED_FAV_MOVIE_CODE = 555;
+
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private Movie movie;
+    private boolean oldIsFavourite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,8 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(Movie.MOVIE_EXTRA)) {
-            Movie movie = intent.getParcelableExtra(Movie.MOVIE_EXTRA);
+            movie = intent.getParcelableExtra(Movie.MOVIE_EXTRA);
+            oldIsFavourite = movie.isFavourite();
             setupViewPager(viewPager, movie);
             setTitle(movie.getTitle());
         } else {
@@ -48,6 +53,10 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            // if the movie was unfavourited
+            if (oldIsFavourite && (oldIsFavourite != movie.isFavourite())) {
+                setResult(UNFAVED_FAV_MOVIE_CODE);
+            }
             supportFinishAfterTransition();
             return true;
         }

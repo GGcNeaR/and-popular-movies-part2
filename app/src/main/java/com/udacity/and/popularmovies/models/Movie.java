@@ -16,18 +16,16 @@ public class Movie implements Parcelable {
     private String originalLanguage;
     private String originalTitle;
 
-    private int[] genreIds;
-
     private int voteCount;
     private double voteAverage;
     private double popularity;
     private String backdropPath;
     private boolean isAdult;
 
-    private final ObservableBoolean isFavourite = new ObservableBoolean();
+    private boolean isFavourite;
 
     public Movie(int id, String title, String overview, String posterPath, String releaseDate,
-                 String originalLanguage, String originalTitle, int[] genreIds,
+                 String originalLanguage, String originalTitle,
                  int voteCount, double voteAverage, double popularity,
                  String backdropPath, boolean isAdult, boolean isFavourite) {
 
@@ -38,20 +36,19 @@ public class Movie implements Parcelable {
         this.releaseDate = releaseDate;
         this.originalLanguage = originalLanguage;
         this.originalTitle = originalTitle;
-        this.genreIds = genreIds;
         this.voteCount = voteCount;
         this.voteAverage = voteAverage;
         this.popularity = popularity;
         this.backdropPath = backdropPath;
         this.isAdult = isAdult;
-        this.isFavourite.set(isFavourite);
+        this.isFavourite = isFavourite;
     }
     public Movie(int id, String title, String overview, String posterPath, String releaseDate,
-                 String originalLanguage, String originalTitle, int[] genreIds,
+                 String originalLanguage, String originalTitle,
                  int voteCount, double voteAverage, double popularity,
                  String backdropPath, boolean isAdult) {
         this(id, title, overview, posterPath, releaseDate,
-                originalLanguage, originalTitle, genreIds,
+                originalLanguage, originalTitle,
                 voteCount, voteAverage, popularity,
                 backdropPath, isAdult, false);
     }
@@ -84,10 +81,6 @@ public class Movie implements Parcelable {
         return originalTitle;
     }
 
-    public int[] getGenreIds() {
-        return genreIds;
-    }
-
     public int getVoteCount() {
         return voteCount;
     }
@@ -108,10 +101,10 @@ public class Movie implements Parcelable {
         return isAdult;
     }
 
-    public boolean isFavourite() { return isFavourite.get(); }
+    public boolean isFavourite() { return isFavourite; }
 
     public void setFavourite(boolean isFavourite) {
-        this.isFavourite.set(isFavourite);
+        this.isFavourite = isFavourite;
     }
 
     @Override
@@ -128,13 +121,12 @@ public class Movie implements Parcelable {
         dest.writeString(releaseDate);
         dest.writeString(originalLanguage);
         dest.writeString(originalTitle);
-        dest.writeInt(genreIds.length);
-        dest.writeIntArray(genreIds);
         dest.writeInt(voteCount);
         dest.writeDouble(voteAverage);
         dest.writeDouble(popularity);
         dest.writeString(backdropPath);
         dest.writeByte((byte)(isAdult ? 1 : 0));
+        dest.writeInt((byte)(isFavourite ? 1 : 0));
     }
 
     public static final Parcelable.Creator<Movie> CREATOR
@@ -156,12 +148,11 @@ public class Movie implements Parcelable {
         this.releaseDate = in.readString();
         this.originalLanguage = in.readString();
         this.originalTitle = in.readString();
-        this.genreIds = new int[in.readInt()];
-        in.readIntArray(this.genreIds);
         this.voteCount = in.readInt();
         this.voteAverage = in.readDouble();
         this.popularity = in.readDouble();
         this.backdropPath = in.readString();
         this.isAdult = in.readByte() != 0;
+        this.isFavourite = in.readByte() != 0;
     }
 }

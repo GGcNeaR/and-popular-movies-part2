@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.udacity.and.popularmovies.BuildConfig;
 import com.udacity.and.popularmovies.R;
 import com.udacity.and.popularmovies.adapters.MoviesGridAdapter;
+import com.udacity.and.popularmovies.data.MoviesRepository;
 import com.udacity.and.popularmovies.models.Movie;
 import com.udacity.and.popularmovies.utils.JsonUtils;
 import com.udacity.and.popularmovies.utils.NetworkUtils;
@@ -44,11 +45,13 @@ import static com.udacity.and.popularmovies.ui.MainActivity.MoviesLoader.API_KEY
 public class MainActivity extends AppCompatActivity
                             implements LoaderManager.LoaderCallbacks<AsyncTaskResult<List<Movie>>> {
 
+    private static final int MAIN_ACTIVITY_RESULT = 985;
     private static final int MOVIES_LOADER = 42;
     private static final int PORTRAIT_COLUMNS_COUNT = 2;
     private static final int LANDSCAPE_COLUMNS_COUNT = 3;
     private RecyclerView moviesPostersRecyclerView;
     private ProgressBar progressBar;
+    private int lastRequestType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +68,6 @@ public class MainActivity extends AppCompatActivity
         moviesPostersRecyclerView = findViewById(R.id.movie_posters_rv);
         progressBar = findViewById(R.id.progress_bar);
 
-        // Note to reviewer: at least on the phones I used for testing,
-        // 2 columns for portrait and 3 for landscape looks ok.
-        // Please let me know if there is a better approach for serving responsive grid in my case.
         int numberOfColumns = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
                             LANDSCAPE_COLUMNS_COUNT :
                             PORTRAIT_COLUMNS_COUNT;
@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initLoader(int requestType, boolean isRestart) {
+        lastRequestType = requestType;
+
         Bundle bundle = new Bundle();
         bundle.putInt(MoviesLoader.REQUEST_TYPE_EXTRA, requestType);
         if (NetworkUtils.isNetworkAvailable(this)) {
@@ -106,6 +108,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_show_top_rated:
                 initLoader(MoviesLoader.REQUEST_TYPE_TOP_RATED, true);
                 break;
+            case R.id.action_show_favourite:
+                initLoader(MoviesLoader.REQUEST_TYPE_FAVOURITE, true);
+                break;
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -123,21 +128,11 @@ public class MainActivity extends AppCompatActivity
     public void onLoadFinished(Loader<AsyncTaskResult<List<Movie>>> loader, AsyncTaskResult<List<Movie>> data) {
         if (data.getException() != null) {
             Toast.makeText(MainActivity.this, getString(R.string.error_loading_movies_from_internet), Toast.LENGTH_SHORT).show();
+
+            progressBar.setVisibility(View.GONE);
         } else {
-            MoviesGridAdapter adapter = new MoviesGridAdapter(this, data.getResult());
-            adapter.setOnMoviePosterOnClickListener(new MoviePosterOnClickListener() {
-                @Override
-                public void onMoviePosterClicked(Movie movie) {
-                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                    intent.putExtra(Movie.MOVIE_EXTRA, movie);
-                    startActivity(intent);
-                }
-            });
-
-            moviesPostersRecyclerView.setAdapter(adapter);
+            displayMovies(data.getResult());
         }
-
-        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -145,10 +140,38 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (lastRequestType == MoviesLoader.REQUEST_TYPE_FAVOURITE &&
+            requestCode == MAIN_ACTIVITY_RESULT && resultCode == DetailActivity.UNFAVED_FAV_MOVIE_CODE) {
+            // movie fav changed - no longer fav. Reload fav movies.
+            initLoader(MoviesLoader.REQUEST_TYPE_FAVOURITE, true);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+
+    }
+
+    private void displayMovies(List<Movie> movies) {
+        MoviesGridAdapter adapter = new MoviesGridAdapter(this, movies);
+        adapter.setOnMoviePosterOnClickListener(new MoviePosterOnClickListener() {
+            @Override
+            public void onMoviePosterClicked(Movie movie) {
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra(Movie.MOVIE_EXTRA, movie);
+                startActivityForResult(intent, MAIN_ACTIVITY_RESULT);
+            }
+        });
+
+        moviesPostersRecyclerView.setAdapter(adapter);
+        progressBar.setVisibility(View.GONE);
+    }
+
     static class MoviesLoader extends AsyncTaskLoader<AsyncTaskResult<List<Movie>>> {
         static final String REQUEST_TYPE_EXTRA = "MOVIE_ID_EXTRA";
         static final int REQUEST_TYPE_POPULAR = 1;
         static final int REQUEST_TYPE_TOP_RATED = 2;
+        static final int REQUEST_TYPE_FAVOURITE = 3;
 
         private static final String BASE_MOVIES_ADDRESS = "http://api.themoviedb.org";
         private static final String API_VERSION_PATH_SEGMENT = "3";
@@ -160,11 +183,13 @@ public class MainActivity extends AppCompatActivity
 
         private AsyncTaskResult<List<Movie>> moviesResult;
         private int requestType = REQUEST_TYPE_POPULAR;
+        private MoviesRepository moviesRepository;
 
         MoviesLoader(Context context, Bundle args) {
             super(context);
             if (args != null && args.containsKey(REQUEST_TYPE_EXTRA)) {
                 requestType = args.getInt(REQUEST_TYPE_EXTRA, REQUEST_TYPE_POPULAR);
+                moviesRepository = new MoviesRepository(context);
             }
         }
 
@@ -181,23 +206,27 @@ public class MainActivity extends AppCompatActivity
         @Override
         public AsyncTaskResult<List<Movie>> loadInBackground() {
             AsyncTaskResult<List<Movie>> result = new AsyncTaskResult<>();
-            String content = null;
-            // build the path, the last segment is dynamic based on the mode - popular or top-rated
-            List<String> paths = new ArrayList<>();
-            paths.add(API_VERSION_PATH_SEGMENT);
-            paths.add(API_ENTITY_TYPE_PATH_SEGMENT);
-            paths.add(getApiRequestTypePathSegment());
+            if (requestType == REQUEST_TYPE_FAVOURITE) {
+                result.setResult(moviesRepository.get());
+            } else {
+                String content = null;
+                // build the path, the last segment is dynamic based on the mode - popular or top-rated
+                List<String> paths = new ArrayList<>();
+                paths.add(API_VERSION_PATH_SEGMENT);
+                paths.add(API_ENTITY_TYPE_PATH_SEGMENT);
+                paths.add(getApiRequestTypePathSegment());
 
-            // prepare the dictionary for the query params
-            Map<String, String> params = new HashMap<>();
-            params.put(API_KEY_QUERY_PARAM_NAME, API_KEY_QUERY_PARAM_VALUE);
+                // prepare the dictionary for the query params
+                Map<String, String> params = new HashMap<>();
+                params.put(API_KEY_QUERY_PARAM_NAME, API_KEY_QUERY_PARAM_VALUE);
 
-            URL url = NetworkUtils.buildUrl(BASE_MOVIES_ADDRESS, paths, params);
-            try {
-                content = NetworkUtils.getResponseFromHttpUrl(url);
-                result.setResult(JsonUtils.parseMovies(content));
-            } catch (IOException e) {
-                result.setException(e);
+                URL url = NetworkUtils.buildUrl(BASE_MOVIES_ADDRESS, paths, params);
+                try {
+                    content = NetworkUtils.getResponseFromHttpUrl(url);
+                    result.setResult(JsonUtils.parseMovies(content));
+                } catch (IOException e) {
+                    result.setException(e);
+                }
             }
 
             return result;

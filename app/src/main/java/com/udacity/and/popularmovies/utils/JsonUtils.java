@@ -23,7 +23,6 @@ public class JsonUtils {
     private static final String RELEASE_DATE_KEY = "release_date";
     private static final String ORIGINAL_LANGUAGE_KEY = "original_language";
     private static final String ORIGINAL_TITLE_KEY = "original_title";
-    private static final String GENRE_IDS_KEY = "genre_ids";
     private static final String VOTE_COUNT_KEY = "vote_count";
     private static final String VOTE_AVERAGE_KEY = "vote_average";
     private static final String POPULARITY_KEY = "popularity";
@@ -128,7 +127,6 @@ public class JsonUtils {
         String releaseDate = null;
         String originalLanguage = null;
         String originalTitle = null;
-        int[] genreIds = null;
         int voteCount = 0;
         double voteAvg = 0.00;
         double popularity = 0.00;
@@ -154,23 +152,6 @@ public class JsonUtils {
             if (movieJsonObject.has(ORIGINAL_TITLE_KEY)) {
                 originalTitle = movieJsonObject.optString(ORIGINAL_TITLE_KEY);
             }
-            if (movieJsonObject.has(GENRE_IDS_KEY)) {
-                JSONArray genreIdsJsonArray = movieJsonObject.optJSONArray(GENRE_IDS_KEY);
-                if (genreIdsJsonArray != null) {
-                    List<Integer> genreIdsList = new ArrayList<>();
-                    for (int i = 0, len = genreIdsJsonArray.length(); i < len; i++) {
-                        int genreId = genreIdsJsonArray.optInt(i);
-                        if (genreId != 0) {
-                            genreIdsList.add(genreId);
-                        }
-                    }
-                    int genreIdsCount = genreIdsList.size();
-                    genreIds = new int[genreIdsCount];
-                    for (int i = 0; i < genreIdsCount; i++) {
-                        genreIds[i] = genreIdsList.get(i);
-                    }
-                }
-            }
             if (movieJsonObject.has(VOTE_COUNT_KEY)) {
                 voteCount = movieJsonObject.optInt(VOTE_COUNT_KEY);
             }
@@ -188,7 +169,7 @@ public class JsonUtils {
             }
 
             movie = new Movie(id, title, overview, posterPath, releaseDate,
-                                originalLanguage, originalTitle, genreIds,
+                                originalLanguage, originalTitle,
                                 voteCount, voteAvg, popularity,
                                 backdropPath, isAdult);
         }
